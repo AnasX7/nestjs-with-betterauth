@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DbModule } from './db/db.module';
-import { DbService } from './db/db.service';
+import { PrismaModule } from './db/prisma.module';
+import { PrismaService } from './db/prisma.service';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { betterAuth } from 'better-auth';
@@ -10,11 +10,11 @@ import { admin, openAPI } from 'better-auth/plugins';
 
 @Module({
   imports: [
-    DbModule,
+    PrismaModule,
     AuthModule.forRootAsync({
-      imports: [DbModule],
-      inject: [DbService],
-      useFactory: (database: DbService) => ({
+      imports: [PrismaModule],
+      inject: [PrismaService],
+      useFactory: (database: PrismaService) => ({
         auth: betterAuth({
           database: prismaAdapter(database, {
             provider: 'postgresql',
